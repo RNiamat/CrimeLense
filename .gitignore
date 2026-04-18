@@ -26,3 +26,6 @@ backend/ml-service/.env
 # OS files
 .DS_Store
 Thumbs.db
+
+*.pyd
+*.dll
