@@ -21,9 +21,8 @@ CORS(app, origins="*")
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR   = Path(__file__).resolve().parent
-MODELS_DIR = Path(__file__).resolve().parent / "models"
-if not MODELS_DIR.exists():
-    MODELS_DIR = (BASE_DIR / "../../Models files").resolve()
+MODELS_DIR = Path(_file_).resolve().parent / "models"
+MODELS_DIR.mkdir(exist_ok=True)
 
 # ── Model registry ────────────────────────────────────────────────────────────
 models        = {}
