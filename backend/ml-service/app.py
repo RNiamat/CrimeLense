@@ -4,7 +4,7 @@ All lookup keys are strings (matching new feature_lookup_tables.pkl).
 No heuristic fallbacks — pure model-driven predictions.
 """
 
-import os, json, time, pickle, traceback, datetime
+import os, json, time, pickle, traceback, datetime, threading
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import startup
 
 load_dotenv()
 
@@ -86,7 +85,17 @@ def load_models():
         print(f"[CrimeLense] STARTUP ERROR: {e}")
         traceback.print_exc()
 
-load_models()
+def _background_startup():
+    """Download models then load them — runs in background so Flask starts immediately."""
+    try:
+        import startup  # downloads all files from HuggingFace
+    except Exception as e:
+        print(f"[CrimeLense] startup.py error: {e}")
+    load_models()
+
+# Launch in daemon thread — Flask binds to PORT instantly; models load in background
+_t = threading.Thread(target=_background_startup, daemon=True)
+_t.start()
 
 # ── LAPD division centroids → area_id 1-21 ────────────────────────────────────
 LAPD_DIVISIONS = [
