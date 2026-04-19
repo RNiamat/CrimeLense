@@ -20,6 +20,7 @@ CORS(app, origins="*")
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR   = Path(__file__).resolve().parent
+MODELS_DIR = Path(__file__).resolve().parent / "models"
 MODELS_DIR = Path(os.getenv("MODELS_PATH", "../../Models files")).resolve()
 if not MODELS_DIR.exists():
     MODELS_DIR = (BASE_DIR / "../../Models files").resolve()
